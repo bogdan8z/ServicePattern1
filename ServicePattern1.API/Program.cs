@@ -61,7 +61,6 @@ namespace ServicePattern1
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped(typeof(IRepository<>), typeof(InMemoryRepository<>));
         }
     }
 }
