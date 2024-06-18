@@ -20,11 +20,11 @@ namespace ServicePattern1.Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<GetAaaModel>> GetAllOrders()
+        public async Task<IEnumerable<GetOrders>> GetAllOrders()
         {
             var dbResults = await _unitOfWork.OrderRepository.GetAllOrdersWithItems();
-            var mappedOrders = _mapper.Map<List<OrderModel111>>(dbResults).ToList();             
-            var results = _mapper.Map<List<GetAaaModel>>(mappedOrders).ToList();
+            var mappedOrders = _mapper.Map<List<GetDbOrderModel>>(dbResults).ToList();             
+            var results = _mapper.Map<List<GetOrders>>(mappedOrders).ToList();
             return results;
         }
     }

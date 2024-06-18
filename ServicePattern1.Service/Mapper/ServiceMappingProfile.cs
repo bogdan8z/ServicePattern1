@@ -8,7 +8,7 @@ namespace ServicePattern1.Service.Mapper
     {
         public ServiceMappingProfile()
         {
-            CreateMap<OrderModel111, GetAaaModel>();
+            CreateMap<GetDbOrderModel, GetOrders>();
         }
     }
 

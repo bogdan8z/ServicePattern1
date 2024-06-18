@@ -8,7 +8,7 @@ namespace ServicePattern1.API.Mapper
     {
         public ApiMappingProfile()
         {
-            CreateMap<GetAaaModel, GetAllOrdersModel>();
+            CreateMap<GetOrders, GetAllOrdersModel>();
         }
     }
 

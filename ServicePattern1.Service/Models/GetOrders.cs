@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServicePattern1.Service.Models
 {
-    public class GetAaaModel
+    public class GetOrders
     {
         public int Id { get; set; }
     }

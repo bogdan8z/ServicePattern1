@@ -4,6 +4,6 @@ namespace ServicePattern1.Service.Interfaces
 {
     public interface IOrderService
     {
-        Task<IEnumerable<GetAaaModel>> GetAllOrders();
+        Task<IEnumerable<GetOrders>> GetAllOrders();
     }
 }

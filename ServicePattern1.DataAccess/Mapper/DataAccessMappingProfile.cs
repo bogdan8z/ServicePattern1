@@ -8,7 +8,7 @@ namespace ServicePattern1.DataAccess.Mapper
     {
         public DataAccessMappingProfile()
         {
-            CreateMap<Order, OrderModel111>();
+            CreateMap<Order, GetDbOrderModel>();
         }
     }
 
