@@ -28,7 +28,11 @@ namespace ServicePattern1
 
             AddDependencies(builder.Services, builder.Configuration);
 
-            builder.Services.AddAutoMapper(typeof(ApiMappingProfile), typeof(ServiceMappingProfile));
+            builder.Services.AddAutoMapper(
+                typeof(ApiMappingProfile), 
+                typeof(ServiceMappingProfile),
+                typeof(DataAccess.Mapper.DataAccessMappingProfile)
+                );
 
             var app = builder.Build();
 
@@ -57,7 +61,6 @@ namespace ServicePattern1
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IMappingService, MappingService>();
             services.AddScoped(typeof(IRepository<>), typeof(InMemoryRepository<>));
         }
     }
