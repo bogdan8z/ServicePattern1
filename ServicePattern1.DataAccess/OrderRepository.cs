@@ -16,8 +16,8 @@ namespace ServicePattern1.DataAccess
         public async Task<IEnumerable<Order>> GetAllOrdersWithItems()
         {
             return await _context.Set<Order>()
-           .Include(o => o.Items)
-           .ToListAsync();
+                .Include(o => o.Items)
+                .ToListAsync();
         }        
     }
 }

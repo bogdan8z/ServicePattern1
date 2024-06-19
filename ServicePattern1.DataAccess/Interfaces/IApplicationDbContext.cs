@@ -11,7 +11,5 @@ namespace ServicePattern1.DataAccess.Interfaces
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-
-        //continua cu InMemoryRepository todo
     }
 }

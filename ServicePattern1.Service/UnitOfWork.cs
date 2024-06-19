@@ -1,30 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServicePattern1.DataAccess;
-using ServicePattern1.DataAccess.Interfaces;
+﻿using ServicePattern1.DataAccess.Interfaces;
 using ServicePattern1.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServicePattern1.Service
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IApplicationDbContext? _context;
         private bool _disposed = false;
 
         public IOrderRepository OrderRepository { get; }
 
-        public UnitOfWork(IApplicationDbContext context)
+        public UnitOfWork(IOrderRepository orderRepository, IApplicationDbContext context) : this(orderRepository)
         {
             _context = context;
-            OrderRepository = new OrderRepository(_context);
+        }
+
+        // Constructor when using in-memory repository
+        public UnitOfWork(IOrderRepository orderRepository)
+        {
+            OrderRepository = orderRepository;
         }
 
         public async Task<int> CompleteAsync()
         {
+            if(_context == null)
+            {
+                return 0;
+            }
+
             return await _context.SaveChangesAsync();
         }
 
@@ -36,15 +39,23 @@ namespace ServicePattern1.Service
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed && disposing)
+            if (!_disposed)
             {
-                //todo
-                if (_context is IDisposable disposableRepository)
+                if (disposing)
                 {
-                    disposableRepository.Dispose();
+                    if (_context is IDisposable disposableContext)
+                    {
+                        disposableContext.Dispose();
+                    }
                 }
+
+                _disposed = true;
             }
-            _disposed = true;
+        }
+
+        ~UnitOfWork()
+        {
+            Dispose(false);
         }
     }
 }

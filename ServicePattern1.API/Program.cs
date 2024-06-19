@@ -3,6 +3,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using ServicePattern1.API.Mapper;
 using ServicePattern1.DataAccess;
 using ServicePattern1.DataAccess.Interfaces;
@@ -47,7 +48,6 @@ namespace ServicePattern1
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
@@ -55,12 +55,27 @@ namespace ServicePattern1
 
         private static void AddDependencies(IServiceCollection services, Microsoft.Extensions.Configuration.ConfigurationManager configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            bool useInMemoryRepository = configuration.GetValue<bool>("UseInMemoryRepository");
+
+            if (useInMemoryRepository)
+            {
+                // Register the in-memory repository
+                services.AddScoped<IOrderRepository, InMemoryData.OrderRepository>();
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+               
+                services.AddScoped<IOrderService, OrderService>();
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-            );
-            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IOrderService, OrderService>();
+                );
+                services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+                services.AddScoped<IOrderService, OrderService>();
+                services.AddScoped(typeof(IRepository<>), typeof(InMemoryRepository<>));
+                services.AddScoped<IOrderRepository, OrderRepository>();
+            }
         }
     }
 }
