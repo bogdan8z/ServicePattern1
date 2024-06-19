@@ -59,10 +59,8 @@ namespace ServicePattern1
 
             if (useInMemoryRepository)
             {
-                // Register the in-memory repository
                 services.AddScoped<IOrderRepository, InMemoryData.OrderRepository>();
-                services.AddScoped<IUnitOfWork, UnitOfWork>();
-               
+                services.AddScoped<IUnitOfWork, UnitOfWork>();               
                 services.AddScoped<IOrderService, OrderService>();
             }
             else
@@ -73,7 +71,6 @@ namespace ServicePattern1
                 services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 services.AddScoped<IOrderService, OrderService>();
-                services.AddScoped(typeof(IRepository<>), typeof(InMemoryRepository<>));
                 services.AddScoped<IOrderRepository, OrderRepository>();
             }
         }
